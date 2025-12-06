@@ -1,0 +1,56 @@
+# ---------------------------
+# Node
+# ---------------------------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+
+# ---------------------------
+# Environment variables
+# ---------------------------
+.env
+.env.local
+.env.development
+.env.production
+
+# ---------------------------
+# Logs
+# ---------------------------
+logs
+*.log
+logs/*.log
+
+# ---------------------------
+# Build output
+# ---------------------------
+dist/
+build/
+.next/
+out/
+coverage/
+
+# ---------------------------
+# System files
+# ---------------------------
+.DS_Store
+Thumbs.db
+
+# ---------------------------
+# IDE files
+# ---------------------------
+.vscode/
+.idea/
+
+# ---------------------------
+# OS temp
+# ---------------------------
+*.tmp
+*.temp
+
+# ---------------------------
+# Local data
+# ---------------------------
+backend/uploads/
