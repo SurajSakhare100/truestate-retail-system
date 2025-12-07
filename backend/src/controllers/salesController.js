@@ -1,4 +1,4 @@
-import { fetchSales } from "../services/sales.service.js";
+import { fetchSales } from "../services/sales.js";
 
 export const getSales = async (req, res) => {
   try {

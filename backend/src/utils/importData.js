@@ -19,7 +19,6 @@ const importData = async () => {
 
     console.log("MongoDB Connected");
 
-    // Clear old data (optional but recommended)
     await Sale.deleteMany({});
     console.log("Old data cleared.");
 
