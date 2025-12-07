@@ -18,7 +18,7 @@ export default function SummaryCards({ meta = {} }:any) {
 
       <h3 className="font-semibold mt-1 flex items-baseline gap-1 text-sm">
         {value}
-        {sub && <span className="text-gray-500 ">{sub}</span>}
+        {sub && <span className="text-black ">{sub}</span>}
       </h3>
     </div>
   );

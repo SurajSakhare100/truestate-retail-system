@@ -2,7 +2,7 @@ import { ChevronDown } from "lucide-react";
 
 const SidebarHeader = () => {
   return (
-    <div className="p-3 rounded-lg bg-white border border-gray-300 mb-4">
+    <div className="p-2 rounded-lg bg-white border border-gray-300 mb-4">
       <div className="flex items-center gap-3">
         <img
           src="/logo.png"
