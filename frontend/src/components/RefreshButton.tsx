@@ -8,10 +8,10 @@ const RefreshButton = ({ onClick }: RefreshButtonProps) => {
   return (
     <button
       onClick={onClick}
-      className="p-2 hover:bg-gray-100 rounded"
+      className="p-2 bg-[#F3F3F3] hover:bg-[#E0E0E0] rounded"
       title="Reset Filters"
     >
-      <RefreshCw className="w-5 h-5 text-gray-600" />
+      <RefreshCw className="w-4 h-4 text-[#3A3A47]" />
     </button>
   );
 };

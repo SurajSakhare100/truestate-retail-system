@@ -28,10 +28,9 @@ const FilterBar = ({
       document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // resets page whenever filter changes (server-driven)
   const applyFilter = (key: string, value: any) => {
     setFilters({ ...filters, [key]: value });
-    setCurrentPage(1); // 🔥 ensures data reload
+    setCurrentPage(1);
   };
 
   return (
@@ -43,7 +42,6 @@ const FilterBar = ({
         sticky top-0 z-30
       "
     >
-      {/* RESET */}
       <RefreshButton
         onClick={() => {
           resetAllFilters();
@@ -51,7 +49,6 @@ const FilterBar = ({
         }}
       />
 
-      {/* REGION */}
       <FilterDropdown
         label="Customer Region"
         type="region"
@@ -63,7 +60,6 @@ const FilterBar = ({
         onChange={(v: any) => applyFilter("region", v)}
       />
 
-      {/* GENDER */}
       <FilterDropdown
         label="Gender"
         type="gender"
@@ -75,7 +71,6 @@ const FilterBar = ({
         onChange={(v: any) => applyFilter("gender", v)}
       />
 
-      {/* AGE */}
       <FilterDropdown
         label="Age Range"
         type="age"
@@ -87,7 +82,6 @@ const FilterBar = ({
         onChange={(v: any) => applyFilter("age", v)}
       />
 
-      {/* CATEGORY */}
       <FilterDropdown
         label="Product Category"
         type="category"
@@ -99,7 +93,6 @@ const FilterBar = ({
         onChange={(v: any) => applyFilter("category", v)}
       />
 
-      {/* TAGS */}
       <FilterDropdown
         label="Tags"
         type="tags"
@@ -111,7 +104,6 @@ const FilterBar = ({
         onChange={(v: any) => applyFilter("tags", v)}
       />
 
-      {/* PAYMENT */}
       <FilterDropdown
         label="Payment Method"
         type="payment"
@@ -123,7 +115,6 @@ const FilterBar = ({
         onChange={(v: any) => applyFilter("payment", v)}
       />
 
-      {/* DATE */}
       <FilterDropdown
         label="Date"
         type="date"
@@ -135,23 +126,23 @@ const FilterBar = ({
         onChange={(v: any) => applyFilter("date", v)}
       />
 
-      {/* SORT */}
-      <div className="ml-auto">
-        <FilterDropdown
-          label="Sort by"
-          type="sort"
-          value={{ sortBy, order }}
-          open={openDropdown === "sort"}
-          onOpen={() =>
-            setOpenDropdown(openDropdown === "sort" ? null : "sort")
-          }
-          onChange={(data: any) => {
-            setSortBy(data.sortBy);
-            setOrder(data.order);
-            setCurrentPage(1);
-          }}
-        />
-      </div>
+   <div className="ml-auto relative">
+  <FilterDropdown
+    label="Sort by"
+    type="sort"
+    value={{ sortBy, order }}
+    open={openDropdown === "sort"}
+    onOpen={() =>
+      setOpenDropdown(openDropdown === "sort" ? null : "sort")
+    }
+    onChange={(v: any) => {
+      setSortBy(v.sortBy);
+      setOrder(v.order);
+      setCurrentPage(1);
+    }}
+  />
+</div>
+
     </div>
   );
 };

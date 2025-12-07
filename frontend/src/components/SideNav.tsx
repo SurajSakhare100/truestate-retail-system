@@ -24,7 +24,6 @@ const SidebarNav = ({
       <NavItem icon={Users} label="Nexus" />
       <NavItem icon={PlayCircle} label="Intake" />
 
-      {/* SERVICES */}
       <NavItemWithSubmenu
         icon={ClipboardList}
         label="Services"
@@ -37,7 +36,6 @@ const SidebarNav = ({
         <SubNavItem icon={PlayCircle} label="Closed" />
       </NavItemWithSubmenu>
 
-      {/* INVOICES */}
       <NavItemWithSubmenu
         icon={Receipt}
         label="Invoices"

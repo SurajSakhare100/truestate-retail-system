@@ -1,16 +1,23 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import Header from "./Headers";
 import FilterBar from "./FilterBar";
 import SalesTable from "./SalesTable";
 import Pagination from "./Pagination";
 import { fetchSales } from "@/services/api";
-
-import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import SummaryCards from "./SummaryCards";
-
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
+interface FiltersType {
+  region: string[];
+  gender: string[];
+  age: { min: number; max: number };
+  category: string[];
+  tags: string[];
+  page: number;
+  payment: string[];
+  date: { from: string | null; to: string | null };
+}
 const Dashboard = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -21,25 +28,28 @@ const Dashboard = () => {
   const [order, setOrder] = useState("desc");
   const [currentPage, setCurrentPage] = useState(1);
 
-  const [filters, setFilters] = useState({
-    region: [] as string[],
-    gender: [] as string[],
+  const [filters, setFilters] = useState<FiltersType>({
+    region: [],
+    gender: [],
     age: { min: 0, max: 100 },
-    category: [] as string[],
-    tags: [] as string[],
-    payment: [] as string[],
-    date: { from: null as string | null, to: null as string | null }
+    category: [],
+    tags: [],
+    payment: [],
+    page: 1,
+    date: { from: null, to: null }
   });
 
   const [sales, setSales] = useState([]);
-  const [summary, setSummary] = useState<any>({});
+  const [summary, setSummary] = useState({});
   const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     setQuery(searchParams.get("search") || "");
     setSortBy(searchParams.get("sortBy") || "date");
     setOrder(searchParams.get("order") || "desc");
-    setCurrentPage(Number(searchParams.get("page")) || 1);
+
+    const pageFromURL = Number(searchParams.get("page"));
+    if (pageFromURL > 0) setCurrentPage(pageFromURL);
 
     setFilters({
       region: searchParams.getAll("region"),
@@ -54,9 +64,10 @@ const Dashboard = () => {
       date: {
         from: searchParams.get("dateFrom") || null,
         to: searchParams.get("dateTo") || null
-      }
+      },
+      page: Number(searchParams.get("page")) || 1
     });
-  }, [searchParams.toString()]);
+  }, []);
 
   const buildQueryParams = () => ({
     search: query,
@@ -74,50 +85,46 @@ const Dashboard = () => {
     page: currentPage,
     limit: 10
   });
-  const updateURL = () => {
+
+  useEffect(() => {
     const params = new URLSearchParams();
 
     if (query) params.set("search", query);
-
     filters.region.forEach(v => params.append("region", v));
     filters.gender.forEach(v => params.append("gender", v));
     filters.category.forEach(v => params.append("category", v));
     filters.tags.forEach(v => params.append("tags", v));
     filters.payment.forEach(v => params.append("payment", v));
 
-    if (filters.age.min !== 0) params.set("ageMin", String(filters.age.min));
-    if (filters.age.max !== 100) params.set("ageMax", String(filters.age.max));
+    params.set("ageMin", filters.age.min.toString());
+    params.set("ageMax", filters.age.max.toString());
 
     if (filters.date.from) params.set("dateFrom", filters.date.from);
     if (filters.date.to) params.set("dateTo", filters.date.to);
 
     params.set("sortBy", sortBy);
     params.set("order", order);
-    params.set("page", String(currentPage));
+    params.set("page", filters.page.toString());
 
-    router.push(`${pathname}?${params.toString()}`, { scroll: false });
-  };
-
-  useEffect(updateURL, [query, filters, sortBy, order, currentPage]);
+    router.replace(`${pathname}?${params.toString()}`);
+  }, [query, filters, sortBy, order, currentPage]);
 
   useEffect(() => {
-    const loadSales = async () => {
+    const load = async () => {
       const res = await fetchSales(buildQueryParams());
-
       setSales(res.data || []);
       setSummary(res.meta || {});
       setTotalPages(res.pages || 1);
     };
 
-    loadSales();
-  }, [searchParams.toString()]);
+    load();
+  }, [query, filters, sortBy, order, currentPage]);
 
- 
   const resetAllFilters = () => {
     setQuery("");
-    setCurrentPage(1);
     setSortBy("date");
     setOrder("desc");
+    setCurrentPage(1);
 
     setFilters({
       region: [],
@@ -126,14 +133,14 @@ const Dashboard = () => {
       category: [],
       tags: [],
       payment: [],
-      date: { from: null, to: null }
+      date: { from: null, to: null },
+      page: 1
     });
   };
 
   return (
     <div className="flex flex-col w-full">
-
-      <Header />
+      <Header query={query} setQuery={setQuery} />
 
       <FilterBar
         filters={filters}
@@ -143,7 +150,7 @@ const Dashboard = () => {
         order={order}
         setOrder={setOrder}
         resetAllFilters={resetAllFilters}
-        setCurrentPage={setCurrentPage}  
+        setCurrentPage={setCurrentPage}
       />
 
       <div className="px-4 pb-2 bg-white">
@@ -154,14 +161,13 @@ const Dashboard = () => {
         <SalesTable transactions={sales} />
       </div>
 
-      <div className=" bg-white border-t">
+      <div className="bg-white border-t">
         <Pagination
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
           totalPages={totalPages}
         />
       </div>
-
     </div>
   );
 };

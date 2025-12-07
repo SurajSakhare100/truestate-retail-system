@@ -5,6 +5,7 @@ const api = axios.create({
 });
 
 export const fetchSales = async (params: Record<string, any>) => {
+  console.log("API Params:", params);
   const res = await api.get("/sales", { params });
   return res.data;
 };

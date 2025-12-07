@@ -8,9 +8,27 @@ interface Transaction {
   phoneNumber: string;
   gender: string;
   age: number;
+  customerRegion: string;
+  customerType: string;
+  productId: string;
+  productName: string;
+  brand: string;
   productCategory: string;
+  tags: string[];
   quantity: number;
+  pricePerUnit: number;
+  discountPercentage: number;
+  totalAmount: number;
+  finalAmount: number;
+  paymentMethod: string;
+  orderStatus: string;
+  deliveryType: string;
+  storeId: string;
+  storeLocation: string;
+  salespersonId: string;
+  employeeName: string;
 }
+
 
 interface SalesTableProps {
   transactions: Transaction[];
@@ -30,17 +48,34 @@ const SalesTable = ({ transactions }: SalesTableProps) => {
 };
 
 const TableHeader = () => {
-  const headers = [
-    "Transaction ID",
-    "Date",
-    "Customer ID",
-    "Customer name",
-    "Phone Number",
-    "Gender",
-    "Age",
-    "Product Category",
-    "Quantity",
-  ];
+ const headers = [
+  "Transaction ID",
+  "Date",
+  "Customer ID",
+  "Customer Name",
+  "Phone Number",
+  "Gender",
+  "Age",
+  "Region",
+  "Customer Type",
+  "Product ID",
+  "Product Name",
+  "Brand",
+  "Category",
+  "Tags",
+  "Quantity",
+  "Price Per Unit",
+  "Discount %",
+  "Total Amount",
+  "Final Amount",
+  "Payment Method",
+  "Order Status",
+  "Delivery Type",
+  "Store ID",
+  "Store Location",
+  "Salesperson ID",
+  "Employee Name",
+];
 
   return (
     <thead className="bg-gray-50 border-b border-gray-200 sticky top-0 z-20">
@@ -69,27 +104,46 @@ const TableBody = ({ transactions }: { transactions: Transaction[] }) => {
 };
 
 const TableRow = ({ row }: { row: Transaction }) => {
+  const rowData = [
+    row.transactionId,
+    formatDate(row.date),
+    row.customerId,
+    row.customerName,
+    row.phoneNumber,
+    row.gender,
+    row.age,
+    row.customerRegion,
+    row.customerType,
+    row.productId,
+    row.productName,
+    row.brand,
+    row.productCategory,
+    row.tags?.join(", "),
+    row.quantity,
+    row.pricePerUnit,
+    row.discountPercentage,
+    row.totalAmount,
+    row.finalAmount,
+    row.paymentMethod,
+    row.orderStatus,
+    row.deliveryType,
+    row.storeId,
+    row.storeLocation,
+    row.salespersonId,
+    row.employeeName
+  ];
+
   return (
     <tr className="hover:bg-gray-50 text-sm">
-      <td className="px-5 py-4 text-gray-900">{row.transactionId}</td>
-      <td className="px-5 py-4 text-gray-700">{formatDate(row.date)}</td>
-      <td className="px-5 py-4 text-gray-700">{row.customerId}</td>
-      <td className="px-5 py-4 font-medium text-gray-900">{row.customerName}</td>
-
-      <td className="px-5 py-4 text-gray-700">
-        <PhoneCell phone={row.phoneNumber} />
-      </td>
-
-      <td className="px-5 py-4 text-gray-700">{row.gender}</td>
-      <td className="px-5 py-4 text-gray-700">{row.age}</td>
-      <td className="px-5 py-4 text-gray-700">{row.productCategory}</td>
-
-      <td className="px-5 py-4 text-gray-900 font-semibold tabular-nums">
-        {row.quantity.toString().padStart(2, "0")}
-      </td>
+      {rowData.map((item, idx) => (
+        <td key={idx} className="px-5 py-3 text-gray-700 whitespace-nowrap">
+          {item ?? "-"}
+        </td>
+      ))}
     </tr>
   );
 };
+
 
 const PhoneCell = ({ phone }: { phone: string }) => {
   return (
