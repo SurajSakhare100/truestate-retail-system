@@ -1,19 +1,27 @@
-export default function Pagination({ page, setPage, total }:any) {
-  const pages = Math.ceil(total / 10);
+import PaginationButton from "./PaginationButton";
+
+interface PaginationProps {
+  currentPage: number;
+  setCurrentPage: (page: number) => void;
+  totalPages: number;
+}
+
+const Pagination = ({ currentPage, setCurrentPage, totalPages }: PaginationProps) => {
+  // Generate page numbers dynamically
+  const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   return (
-    <div className="flex gap-2 mt-4">
-      {[...Array(pages)].map((_, i) => (
-        <button
-          key={i}
-          onClick={() => setPage(i + 1)}
-          className={`px-3 py-1 rounded border ${
-            page === i + 1 ? "bg-black text-white" : "bg-white"
-          }`}
-        >
-          {i + 1}
-        </button>
+    <div className="flex items-center justify-center gap-2 px-4 py-2 border-t border-gray-200">
+      {pages.map((page) => (
+        <PaginationButton
+          key={page}
+          page={page}
+          isActive={page === currentPage}
+          onClick={() => setCurrentPage(page)}
+        />
       ))}
     </div>
   );
-}
+};
+
+export default Pagination;
