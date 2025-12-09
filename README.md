@@ -39,7 +39,7 @@ Implementation:
 - URL-synced (`?page=`)
 
 ---
-```markdown
+
 # Setup Guide
 
 ## Backend Setup
