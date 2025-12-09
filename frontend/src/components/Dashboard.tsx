@@ -163,10 +163,10 @@ const Dashboard = () => {
 
       <div className="bg-white border-t">
         <Pagination
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          totalPages={totalPages}
-        />
+  currentPage={currentPage}
+  totalPages={totalPages}
+  onPageChange={setCurrentPage}   
+/>
       </div>
     </div>
   );
